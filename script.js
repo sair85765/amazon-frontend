@@ -86,7 +86,43 @@ const products = [
     }
 ];
 
-// ===== FUNCTION TO DISPLAY PRODUCTS =====
+// ===== USER MANAGEMENT =====
+function getUsers() {
+    return JSON.parse(localStorage.getItem('users') || '[]');
+}
+
+function saveUsers(users) {
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+function findUser(email) {
+    const users = getUsers();
+    return users.find(u => u.email === email);
+}
+
+function createUser(name, email, password) {
+    const users = getUsers();
+    const newUser = {
+        id: Date.now(),
+        name: name,
+        email: email,
+        password: password,
+        created: new Date().toISOString()
+    };
+    users.push(newUser);
+    saveUsers(users);
+    return newUser;
+}
+
+function validateUser(email, password) {
+    const user = findUser(email);
+    if (user && user.password === password) {
+        return user;
+    }
+    return null;
+}
+
+// ===== DISPLAY PRODUCTS FUNCTION =====
 function displayProducts(productList) {
     const resultsDiv = document.getElementById('results');
     
@@ -118,43 +154,176 @@ function displayProducts(productList) {
     resultsDiv.innerHTML = html;
 }
 
-// ===== LOGIN =====
+// ========================================
+// ===== LOGIN PAGE LOGIC =====
+// ========================================
 if (document.getElementById('loginForm')) {
+    
+    // ===== TAB SWITCHING =====
+    const loginTab = document.getElementById('loginTab');
+    const signupTab = document.getElementById('signupTab');
+    const loginContainer = document.getElementById('loginFormContainer');
+    const signupContainer = document.getElementById('signupFormContainer');
+    
+    loginTab.addEventListener('click', function() {
+        loginTab.classList.add('active');
+        signupTab.classList.remove('active');
+        loginContainer.style.display = 'block';
+        signupContainer.style.display = 'none';
+        // Clear errors
+        document.getElementById('loginError').textContent = '';
+        document.getElementById('signupError').textContent = '';
+        document.getElementById('signupSuccess').textContent = '';
+    });
+    
+    signupTab.addEventListener('click', function() {
+        signupTab.classList.add('active');
+        loginTab.classList.remove('active');
+        loginContainer.style.display = 'none';
+        signupContainer.style.display = 'block';
+        // Clear errors
+        document.getElementById('loginError').textContent = '';
+        document.getElementById('signupError').textContent = '';
+        document.getElementById('signupSuccess').textContent = '';
+    });
+    
+    // ===== LOGIN FORM =====
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
         
-        if (email && password) {
-            localStorage.setItem('userEmail', email);
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        const errorEl = document.getElementById('loginError');
+        
+        // Clear previous error
+        errorEl.textContent = '';
+        
+        // Validate
+        if (!email || !password) {
+            errorEl.textContent = '⚠️ Please fill in all fields';
+            return;
+        }
+        
+        // Check user
+        const user = validateUser(email, password);
+        
+        if (user) {
+            // Login successful
+            localStorage.setItem('userEmail', user.email);
+            localStorage.setItem('userName', user.name);
             localStorage.setItem('isLoggedIn', 'true');
             window.location.href = 'index.html';
         } else {
-            alert('Please fill in all fields');
+            errorEl.textContent = '❌ Invalid email or password';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginPassword').focus();
+        }
+    });
+    
+    // ===== SIGNUP FORM =====
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('signupName').value.trim();
+        const email = document.getElementById('signupEmail').value.trim();
+        const password = document.getElementById('signupPassword').value;
+        const confirmPassword = document.getElementById('signupConfirmPassword').value;
+        const errorEl = document.getElementById('signupError');
+        const successEl = document.getElementById('signupSuccess');
+        
+        // Clear previous messages
+        errorEl.textContent = '';
+        successEl.textContent = '';
+        
+        // ===== VALIDATION =====
+        
+        // 1. Check all fields filled
+        if (!name || !email || !password || !confirmPassword) {
+            errorEl.textContent = '⚠️ Please fill in all fields';
+            return;
+        }
+        
+        // 2. Check name length
+        if (name.length < 2) {
+            errorEl.textContent = '⚠️ Name must be at least 2 characters';
+            return;
+        }
+        
+        // 3. Check email format
+        if (!email.includes('@') || !email.includes('.')) {
+            errorEl.textContent = '⚠️ Please enter a valid email address';
+            return;
+        }
+        
+        // 4. Check password length
+        if (password.length < 6) {
+            errorEl.textContent = '⚠️ Password must be at least 6 characters';
+            return;
+        }
+        
+        // 5. Check password match
+        if (password !== confirmPassword) {
+            errorEl.textContent = '⚠️ Passwords do not match';
+            document.getElementById('signupConfirmPassword').value = '';
+            document.getElementById('signupConfirmPassword').focus();
+            return;
+        }
+        
+        // 6. Check if user already exists
+        if (findUser(email)) {
+            errorEl.textContent = '⚠️ Email already registered. Please sign in.';
+            return;
+        }
+        
+        // ===== CREATE ACCOUNT =====
+        try {
+            const newUser = createUser(name, email, password);
+            
+            // Success message
+            successEl.textContent = '✅ Account created successfully! Please sign in.';
+            
+            // Clear form
+            document.getElementById('signupName').value = '';
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupPassword').value = '';
+            document.getElementById('signupConfirmPassword').value = '';
+            
+            // Switch to login tab after 2 seconds
+            setTimeout(() => {
+                loginTab.click();
+                document.getElementById('loginEmail').value = email;
+                successEl.textContent = '';
+            }, 2000);
+            
+        } catch (error) {
+            errorEl.textContent = '❌ Error creating account. Please try again.';
+            console.error('Signup error:', error);
         }
     });
 }
 
-// ===== MAIN PAGE =====
+// ========================================
+// ===== MAIN PAGE LOGIC =====
+// ========================================
 if (document.getElementById('searchBtn')) {
-    // Check login
+    // ===== CHECK LOGIN =====
     if (!localStorage.getItem('isLoggedIn')) {
         window.location.href = 'login.html';
     }
     
-    // Show user
-    document.getElementById('userDisplay').textContent = '👤 ' + localStorage.getItem('userEmail');
+    // ===== SHOW USER NAME =====
+    const userName = localStorage.getItem('userName') || 'User';
+    document.getElementById('userDisplay').textContent = '👤 ' + userName;
     
-    // Search
+    // ===== SEARCH FUNCTIONALITY =====
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
     
-    // ===== DISPLAY ALL PRODUCTS ON PAGE LOAD =====
+    // Display all products on page load
     displayProducts(products);
     
     function searchProducts(query) {
         if (!query || query.trim() === '') {
-            // Show all products if search is empty
             displayProducts(products);
             return;
         }
@@ -174,7 +343,7 @@ if (document.getElementById('searchBtn')) {
         if (e.key === 'Enter') searchProducts(searchInput.value);
     });
     
-    // Logout
+    // ===== LOGOUT =====
     document.getElementById('logoutBtn').addEventListener('click', function() {
         localStorage.clear();
         window.location.href = 'login.html';
