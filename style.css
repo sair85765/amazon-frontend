@@ -355,3 +355,190 @@ nav span {
     opacity: 0.6;
     cursor: not-allowed;
 }
+/* ===== DARK MODE STYLES ===== */
+
+/* Dark Mode Variables */
+body.dark-mode {
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+}
+
+/* Dark Mode - Login Page */
+body.dark-mode .login-container {
+    background: #0d0d1a;
+}
+
+body.dark-mode .login-box {
+    background: #16213e;
+    color: #e0e0e0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .login-box h1,
+body.dark-mode .login-box h2 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .login-box input {
+    background: #1a1a2e;
+    color: #e0e0e0;
+    border: 1px solid #2a2a4e;
+}
+
+body.dark-mode .login-box input:focus {
+    border-color: #f0c14b;
+    outline: 2px solid #f0c14b;
+}
+
+body.dark-mode .login-box button {
+    background: #f0c14b;
+    color: #131921;
+}
+
+body.dark-mode .login-box button:hover {
+    background: #ddb347;
+}
+
+body.dark-mode .login-box a {
+    color: #f0c14b;
+}
+
+body.dark-mode .tab-btn {
+    color: #aaa;
+}
+
+body.dark-mode .tab-btn.active {
+    color: #131921;
+    background: #f0c14b;
+}
+
+body.dark-mode .tab-btn:hover {
+    background: #2a2a4e;
+}
+
+/* Dark Mode - Main Page */
+body.dark-mode nav {
+    background: #0d0d1a;
+    border-bottom: 1px solid #2a2a4e;
+}
+
+body.dark-mode nav h1 {
+    color: #f0c14b;
+}
+
+body.dark-mode nav span {
+    color: #e0e0e0;
+}
+
+body.dark-mode .search-box input {
+    background: #1a1a2e;
+    color: #e0e0e0;
+    border: 1px solid #2a2a4e;
+}
+
+body.dark-mode .search-box input::placeholder {
+    color: #888;
+}
+
+body.dark-mode .search-box button {
+    background: #f0c14b;
+    color: #131921;
+}
+
+body.dark-mode .search-box button:hover {
+    background: #ddb347;
+}
+
+body.dark-mode nav button {
+    background: #f0c14b;
+    color: #131921;
+}
+
+body.dark-mode nav button:hover {
+    background: #ddb347;
+}
+
+body.dark-mode .container h2 {
+    color: #e0e0e0;
+}
+
+body.dark-mode #results {
+    background: #16213e;
+    color: #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .product-card {
+    background: #1a1a2e;
+    border-color: #2a2a4e;
+    color: #e0e0e0;
+}
+
+body.dark-mode .product-card:hover {
+    box-shadow: 0 4px 12px rgba(240, 193, 75, 0.2);
+    border-color: #f0c14b;
+}
+
+body.dark-mode .product-card .category {
+    color: #aaa;
+    border-top-color: #2a2a4e;
+}
+
+body.dark-mode .hint {
+    color: #888;
+}
+
+body.dark-mode .no-results {
+    color: #aaa;
+}
+
+body.dark-mode .error-message {
+    color: #ff6b6b;
+}
+
+body.dark-mode .success-message {
+    color: #51cf66;
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.dark-mode-toggle:hover {
+    transform: rotate(20deg);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+    background: rgba(240, 193, 75, 0.2);
+}
+
+/* Dark Mode Form Inputs */
+body.dark-mode .form-group label {
+    color: #e0e0e0;
+}
+
+/* Scrollbar in Dark Mode */
+body.dark-mode ::-webkit-scrollbar {
+    width: 10px;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #1a1a2e;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: #2a2a4e;
+    border-radius: 5px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #f0c14b;
+}

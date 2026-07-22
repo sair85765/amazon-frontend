@@ -14,7 +14,10 @@
             <input type="text" id="searchInput" placeholder="Search products...">
             <button id="searchBtn">Search</button>
         </div>
-        <div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                🌙
+            </button>
             <span id="userDisplay">👤 User</span>
             <button id="logoutBtn">Logout</button>
         </div>
@@ -22,7 +25,7 @@
 
     <!-- Results -->
     <div class="container">
-        <h2>Welcome! Search for products below</h2>
+        <h2>Welcome! Browse our products below</h2>
         <div id="results"></div>
     </div>
 

@@ -1,4 +1,32 @@
 // ===== PRODUCT DATA WITH IMAGES =====
+// ===== DARK MODE FUNCTIONALITY =====
+(function initDarkMode() {
+    // Check saved preference
+    const darkMode = localStorage.getItem('darkMode') === 'true';
+    
+    // Apply dark mode if saved
+    if (darkMode) {
+        document.body.classList.add('dark-mode');
+        // Update toggle button icon if it exists
+        const toggle = document.getElementById('darkModeToggle');
+        if (toggle) toggle.textContent = '☀️';
+    }
+    
+    // Add toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggle = document.getElementById('darkModeToggle');
+        if (toggle) {
+            toggle.addEventListener('click', function() {
+                const isDark = document.body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+                this.textContent = isDark ? '☀️' : '🌙';
+            });
+        }
+    });
+})();
+
+// ===== REST OF YOUR EXISTING CODE GOES BELOW =====
+// ... (all your existing product data, login, search, etc.)
 const products = [
     { 
         name: "iPhone 15 Pro", 
