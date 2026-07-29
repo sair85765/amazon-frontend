@@ -105,13 +105,6 @@ const products = [
         rating: "⭐⭐⭐⭐⭐",
         image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=300&h=300&fit=crop"
     },
-    { 
-        name: "Xbox Series X", 
-        category: "Gaming", 
-        price: "$499", 
-        rating: "⭐⭐⭐⭐",
-        image: "https://images.unsplash.com/photo-1621259182978-fbf93132d3d4?w=300&h=300&fit=crop"
-    }
 ];
 
 // ===== USER MANAGEMENT =====
